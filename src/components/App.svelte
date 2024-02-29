@@ -3,9 +3,9 @@
 </script>
 
 <main>
-  <h1>Svelte template</h1>
+  <h1>Hi</h1>
 
-  <p>Write your HTML here</p>
+  <p>Write rawr HTML here</p>
 </main>
 
 <style>
