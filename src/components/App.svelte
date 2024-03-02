@@ -1,13 +1,26 @@
 <script>
-  // Write your JS here, or import other files
+  import { onMount } from 'svelte';
+  import * as d3 from 'd3';
+
+  let data = [];
+
+  onMount(async () => {
+    const res = await fetch('pokemon.csv');
+    const csv = await res.text();
+    data = d3.csvParse(csv);
+    console.log(data)
+    drawPieChart(data);
+  });
+
+  function drawPieChart(data) {
+    // D3 pie chart code here
+    // Adapt the D3 code to use the 'data' variable
+  }
 </script>
 
-<main>
-  <h1>Hi</h1>
-
-  <p>Write rawr HTML here</p>
-</main>
-
 <style>
-  /* Write your CSS here */
+  /* Add any necessary styles here */
 </style>
+
+<div id="pie-chart"></div>
+

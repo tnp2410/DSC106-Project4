@@ -1,0 +1,60 @@
+<script>
+    import { onMount } from 'svelte';
+    import * as d3 from 'd3';
+  
+    let data = [];
+  
+    onMount(async () => {
+      const res = await fetch('pokemon.csv');
+      const csv = await res.text();
+      data = d3.csvParse(csv);
+      drawPieChart(data);
+    });
+  
+    function drawPieChart(data) {
+      const width = 960;
+      const height = 700;
+      const radius = Math.min(width, height) / 2;
+  
+      const color = d3.scale.category20c();
+  
+      const arc = d3.arc()
+        .outerRadius(radius - 10)
+        .innerRadius(0);
+  
+      const pie = d3.pie()
+        .sort(null)
+        .value(function(d) { return d.population; });
+  
+      const svg = d3.select("#pie-chart").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+  
+      const g = svg.selectAll(".arc")
+        .data(pie(data))
+        .enter().append("g")
+        .attr("class", "arc");
+  
+      g.append("path")
+        .attr("d", arc)
+        .style("fill", function(d) { return color(d.data.name); });
+  
+      g.append("text")
+        .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+        .attr("dy", ".35em")
+        .style("text-anchor", "middle")
+        .text(function(d) {
+            return d.data.name ? d.data.name : "Unknown";
+        });
+
+        // .text(function(d) { return d.data.age; });
+    }
+  </script>
+  
+  <style>
+    /* Add any necessary styles here */
+  </style>
+  
+  <div id="pie-chart"></div>
